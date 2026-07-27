@@ -81,3 +81,9 @@ installs these automatically from the integration's manifest.
 This integration is **not affiliated with, endorsed by, or supported by**
 EP Cube or Canadian Solar. It uses an unofficial, reverse-engineered API.
 Use at your own risk — the cloud API may change without notice.
+
+## License & attribution
+
+This project is licensed under the MIT License — see [`LICENSE`](LICENSE).
+Third-party open-source libraries used at runtime are listed in
+[`NOTICE.md`](NOTICE.md).
