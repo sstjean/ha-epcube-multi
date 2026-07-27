@@ -39,13 +39,32 @@ want your integration to silently die every time your login token expires.
 
 ## Installation
 
-1. Add this repository as a custom repository in HACS (category:
-   Integration), or place `custom_components/epcube_multi/` directly in your
-   Home Assistant `config/custom_components/` directory.
-2. Restart Home Assistant.
-3. Go to **Settings → Devices & Services → Add Integration**, search for
+### Via HACS (recommended)
+
+1. In HACS, open the **⋮** (top-right) → **Custom repositories**. Add
+   `https://github.com/sstjean/ha-epcube-multi` with category **Integration**,
+   then close the dialog.
+2. Search HACS for **"EP Cube Multi-Gateway"**, open it, and click
+   **Download**. **Do this before restarting** — until the integration is
+   downloaded, a custom repository is only *discovered*, not installed, and
+   HACS drops the entry on the next restart/refresh. Downloading anchors it.
+3. **Now restart Home Assistant** (Settings → System → top-right ⋮ → Restart,
+   or Developer Tools → **Restart**).
+4. Go to **Settings → Devices & Services → Add Integration**, search for
    "EP Cube Multi-Gateway", and follow the config flow (choose your region,
    then enter your EP Cube account username and password).
+
+> **Note:** the order matters — *add repo → **Download** → restart*. If you
+> restart before downloading, the custom repository will disappear from the
+> list. That is expected HACS behavior, not a bug in this integration.
+
+### Manual install (alternative)
+
+1. Copy `custom_components/epcube_multi/` into your Home Assistant
+   `config/custom_components/` directory.
+2. Restart Home Assistant.
+3. Add the integration via **Settings → Devices & Services → Add Integration**
+   as in step 4 above.
 
 ## Requirements
 
