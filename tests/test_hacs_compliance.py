@@ -1,8 +1,9 @@
 """AC6 & AC7 (static/manifest-level checks): dependency declaration is
-correct (opencv-python-headless, not opencv-python) and HACS-required files
-are present. Live container install + hacs/action/hassfest execution happen
-in CI (AC6/AC7 runtime enforcement); these tests are the fast, local,
-always-run guardrails against regressing the manifest."""
+correct (scipy/Pillow musllinux-installable solver deps, no OpenCV) and
+HACS-required files are present. Live container install + hacs/action/
+hassfest execution happen in CI (AC6/AC7 runtime enforcement); these tests
+are the fast, local, always-run guardrails against regressing the manifest.
+"""
 import json
 from pathlib import Path
 
@@ -11,11 +12,16 @@ MANIFEST = REPO_ROOT / "custom_components" / "epcube_multi" / "manifest.json"
 HACS_JSON = REPO_ROOT / "hacs.json"
 
 
-def test_manifest_requires_headless_opencv_not_gui_variant():
+def test_manifest_requires_scipy_and_pillow_no_opencv():
+    """v1.2.0: OpenCV publishes zero musllinux wheels and cannot install on
+    the real HA container; the captcha solver was ported to scipy/numpy/
+    Pillow specifically because those DO have musllinux wheels. OpenCV must
+    never reappear in requirements."""
     manifest = json.loads(MANIFEST.read_text())
     reqs = manifest["requirements"]
-    assert any(r.startswith("opencv-python-headless") for r in reqs)
-    assert not any(r.startswith("opencv-python>") or r == "opencv-python" for r in reqs)
+    assert any(r.startswith("scipy") for r in reqs)
+    assert any(r.lower().startswith("pillow") for r in reqs)
+    assert not any("opencv" in r.lower() for r in reqs)
 
 
 def test_manifest_requires_pycryptodome():
