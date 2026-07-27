@@ -72,7 +72,7 @@ want your integration to silently die every time your login token expires.
 time (see `hacs.json`); older Home Assistant is not supported and will fail to
 install.
 
-This integration depends on `opencv-python-headless` (for headless captcha
+This integration depends on `scipy` and `Pillow` (for headless captcha
 solving) and `pycryptodome` (for the login handshake). Home Assistant
 installs these automatically from the integration's manifest.
 

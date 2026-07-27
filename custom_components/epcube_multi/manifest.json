@@ -6,6 +6,6 @@
   "documentation": "https://github.com/sstjean/ha-epcube-multi",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/sstjean/ha-epcube-multi/issues",
-  "requirements": ["opencv-python-headless>=4.9.0", "pycryptodome>=3.20.0"],
-  "version": "1.1.1"
+  "requirements": ["scipy>=1.16.2", "Pillow>=12.0.0", "pycryptodome>=3.20.0"],
+  "version": "1.2.0"
 }

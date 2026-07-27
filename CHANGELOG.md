@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.2.0
+
+### Changed
+- **Captcha solver ported from OpenCV to scipy/numpy/Pillow.** OpenCV
+  publishes zero musllinux (musl libc) wheels, and the real
+  `homeassistant/home-assistant:stable` container is musllinux — so the
+  integration was DOA on real Home Assistant (config flow returned HTTP 500
+  on every add; the dependency physically could not install; not fixable
+  config-side). scipy, numpy, and Pillow all ship musllinux wheels.
+  `manifest.json`: removed `opencv-python-headless`, added `scipy>=1.16.2`
+  and `Pillow>=12.0.0` (floors chosen as the earliest versions with
+  musllinux cp314 wheels published, verified at build time).
+- Algorithm is preserved exactly: 4 Canny-threshold-pair edge candidates +
+  1 Sobel-magnitude candidate = 5 candidates, cluster-and-vote on x, same
+  ±5px cluster tolerance. Canny replaced with a Sobel-gradient
+  double-threshold + connectivity-linked scipy.ndimage equivalent;
+  `cv2.matchTemplate`/`minMaxLoc` replaced with FFT-based normalized
+  cross-correlation (`scipy.signal.fftconvolve`), pinned to the same
+  top-left-origin matching convention (no template-width offset needed).
+- Image decode now uses `PIL.Image.open(...).convert("RGBA")` (was
+  `cv2.imdecode(IMREAD_UNCHANGED)`); `.convert("RGBA")` is mandatory so
+  grayscale/palette source PNGs still decode to the H×W×4 shape the solver's
+  channel-axis indexing requires.
+- Added a small random ±3px jitter to the solved gap-x before the (unchanged)
+  compact-JSON serialization, so submitted answers look hand-placed rather
+  than pixel-perfect. Well inside the measured ≥5px accept band.
+- Captcha retry delay lengthened from a flat 1s to ~1.5–2.5s (jittered) —
+  the solver's own compute time now serves as authentic human-like
+  think-time rather than a bot-tell-fast solve.
+- Public API (`solve_captcha`, `authenticate`) unchanged; no caller changes.
+
 ## 1.1.1
 
 ### Changed
