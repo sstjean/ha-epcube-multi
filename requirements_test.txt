@@ -1,0 +1,5 @@
+pytest>=8.0.0
+pytest-homeassistant-custom-component==0.13.336
+homeassistant==2026.6.0
+opencv-python-headless>=4.9.0
+pycryptodome>=3.20.0
